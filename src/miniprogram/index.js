@@ -5,8 +5,9 @@
  * Released under the MIT license
  * Author: Jin Yufeng
  */
-const Parser = require('./parser')
-const plugins = []
+const Parser = require('./parser');
+const {mpEventWatch} = require('./mpEvent');
+const plugins = [];
 
 Component({
   data: {
@@ -145,6 +146,11 @@ Component({
       this.setContent(this.properties.content)
     }
     // #endif
+
+    // 监听事件
+    mpEventWatch((data) => {
+      this.triggerEvent('mp-event', data);
+    });
   },
 
   // #ifdef MP-ALIPAY
@@ -312,7 +318,7 @@ Component({
       this._videos = []
 
       const data = {}
-      const nodes = new Parser(this).parse(content)
+      const nodes = new Parser(this).parse(content);
       // 尾部追加内容
       if (append) {
         for (let i = this.data.nodes.length, j = nodes.length; j--;) {

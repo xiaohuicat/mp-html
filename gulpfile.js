@@ -7,7 +7,7 @@
 const gulp = require('gulp')
 const htmlmin = require('gulp-htmlmin')
 const babel = require('gulp-babel')
-const uglify = require('gulp-uglify')
+const terser = require('gulp-terser')
 const cleanCss = require('gulp-clean-css')
 const clean = require('gulp-clean')
 const gulpif = require('gulp-if')
@@ -60,7 +60,7 @@ function packComp () {
     }))))
     // js 处理
     .pipe(gulpif(file => file.extname === '.js' && !file.stem.includes('.min') && (platform !== 'uni-app' || file.relative.includes('static')), babel(config.babel))) // es6 转 es5
-    .pipe(gulpif(file => file.extname === '.js' && !file.stem.includes('.min') && !isDev && (platform !== 'uni-app' || file.relative.includes('static')), uglify(config.uglify))) // 压缩 js
+    .pipe(gulpif(file => file.extname === '.js' && !file.stem.includes('.min') && !isDev && (platform !== 'uni-app' || file.relative.includes('static')), terser(config.terser))) // 压缩 js
     // wxss（css）处理
     .pipe(gulpif(file => file.extname.includes('ss'), cleanCss(config.cleanCss))) // 压缩 wxss
     .pipe(plugin.importCss()) // 引入插件中的 css 文件

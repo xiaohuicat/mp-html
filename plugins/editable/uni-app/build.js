@@ -1,3 +1,6 @@
+// const EDIT_STYLE = 'border:1px dashed black;min-width:50px;width:auto;padding:5px;display:block';
+const EDIT_STYLE = 'border:1px dashed black;width:auto;display:block';
+
 /* global getTop */
 module.exports = {
   style: `/* #ifndef H5 || MP-ALIPAY || APP-PLUS */
@@ -542,7 +545,7 @@ module.exports = {
       <text v-else-if="n.type==='text'&&!ctrl['e'+i]" :data-i="i" :user-select="opts[4]" :decode="!opts[5]" @tap="editStart">{{n.text}}
         <text v-if="!n.text" style="color:gray">{{opts[6]||'请输入'}}</text>
       </text>
-      <text v-else-if="n.type==='text'&&ctrl['e'+i]===1" :data-i="i" style="border:1px dashed black;min-width:50px;width:auto;padding:5px;display:block" @tap.stop="editStart">{{n.text}}
+      <text v-else-if="n.type==='text'&&ctrl['e'+i]===1" :data-i="i" style="${EDIT_STYLE}" @tap.stop="editStart">{{n.text}}
         <text v-if="!n.text" style="color:gray">{{opts[6]||'请输入'}}</text>
       </text>
       <textarea v-else-if="n.type==='text'" :style="opts[5]==='simple'?'':'border:1px dashed black;'+'min-width:50px;width:auto;padding:5px'" auto-height maxlength="-1" :focus="ctrl['e'+i]===3" :value="n.text" :data-i="i" @input="editInput" @blur="editEnd" />

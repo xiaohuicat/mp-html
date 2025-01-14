@@ -1,4 +1,8 @@
 const path = require('path')
+
+const EDIT_STYLE = 'border:1px dashed black;min-width:50px;width:auto;padding:5px;display:block';
+const EDIT_INPUT_STYLE = 'min-width:50px;width:auto;padding:5px';
+
 /* global getTop */
 module.exports = {
   style: `/* #ifndef MP-ALIPAY */
@@ -242,6 +246,7 @@ module.exports = {
           top: getTop(e),
           items,
           success: tapIndex => {
+            console.log('tapIndex:', tapIndex);
             if (items[tapIndex] === '大小') {
               // 改变字体大小
               const style = node.attrs.style || ''
@@ -608,10 +613,10 @@ module.exports = {
     <text wx:if="{{!ctrl['e'+i]}}" data-i="{{i}}" mp-weixin:user-select="{{opts[4]}}" decode="{{!opts[5]}}" bindtap="editStart">{{n.text}}
       <text wx:if="{{!n.text}}" style="color:gray">{{opts[6]||'请输入'}}</text>
     </text>
-    <text wx:elif="{{ctrl['e'+i]===1}}" data-i="{{i}}" style="border:1px dashed black;min-width:50px;width:auto;padding:5px;display:block" catchtap="editStart">{{n.text}}
+    <text wx:elif="{{ctrl['e'+i]===1}}" data-i="{{i}}" style="${EDIT_STYLE}" catchtap="editStart">{{n.text}}
       <text wx:if="{{!n.text}}" style="color:gray">{{opts[6]||'请输入'}}</text>
     </text>
-    <textarea wx:else style="{{opts[5]==='simple'?'':'border:1px dashed black;'}}min-width:50px;width:auto;padding:5px" auto-height maxlength="-1" focus="{{ctrl['e'+i]===3}}" value="{{n.text}}" data-i="{{i}}" bindinput="editInput" bindblur="editEnd" />
+    <textarea wx:else style="{{opts[5]==='simple'?'':'border:1px dashed black;'}}${EDIT_INPUT_STYLE}" auto-height maxlength="-1" focus="{{ctrl['e'+i]===3}}" value="{{n.text}}" data-i="{{i}}" bindinput="editInput" bindblur="editEnd" />
   </block>
   <text wx:elif="{{n.name==='br'}}">\\n</text>`)
           // 修改图片
