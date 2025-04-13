@@ -6,7 +6,7 @@
  * Author: Jin Yufeng
  */
 const Parser = require('./parser');
-const {mpEventWatch} = require('./mpEvent');
+const {mpEventWatch, mpEventSend, mpEventOff} = require('./mpEvent');
 const plugins = [];
 
 Component({
@@ -149,8 +149,23 @@ Component({
 
     // 监听事件
     mpEventWatch((data) => {
+      if (data.name === 'tool-tap') {
+        this._tooltipcb(data.data.i);
+        this.setData({
+          tooltip: null
+        });
+      }
+
       this.triggerEvent('mp-event', data);
     });
+
+    setTimeout(() => {
+      // 发送事件
+      mpEventSend({
+        name: 'created',
+        data: {mpEventSend},
+      });
+    }, 0);
   },
 
   // #ifdef MP-ALIPAY
@@ -162,6 +177,7 @@ Component({
   // #endif
 
   detached () {
+    mpEventOff();
     // 注销插件
     this._hook('onDetached')
   },

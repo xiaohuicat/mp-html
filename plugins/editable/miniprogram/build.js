@@ -509,6 +509,12 @@ module.exports = {
       this.setData({
         tooltip: null
       })
+      mpEventSend({
+        name: 'tooltipTap',
+        data: {
+          i: e.currentTarget.dataset.i,
+        },
+      });
     },
     _sliderChanging(e) {
       this._slideringcb(e.detail.value)

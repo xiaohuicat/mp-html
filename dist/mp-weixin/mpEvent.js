@@ -1,1 +1,61 @@
-"use strict";function t(n){return t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},t(n)}function n(t,n){if(!(t instanceof n))throw new TypeError("Cannot call a class as a function")}function e(t,n){for(var e=0;e<n.length;e++){var r=n[e];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,i(r.key),r)}}function r(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),Object.defineProperty(t,"prototype",{writable:!1}),t}function i(n){var e=o(n,"string");return"symbol"==t(e)?e:e+""}function o(n,e){if("object"!=t(n)||!n)return n;var r=n[Symbol.toPrimitive];if(void 0!==r){var i=r.call(n,e||"default");if("object"!=t(i))return i;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(n)}var u=function(){return r((function t(){n(this,t),this.listeners={}}),[{key:"on",value:function(t,n){this.listeners[t]=[n]}},{key:"emit",value:function(t,n){this.listeners[t]&&this.listeners[t].forEach((function(t){return t(n)}))}},{key:"off",value:function(t,n){if(this.listeners[t]){var e=this.listeners[t].indexOf(n);-1!==e&&this.listeners[t].splice(e,1)}}}])}(),f=new u,c=function(t){f.on("channel",t)},l=function(t){f.emit("channel",t)},s=function(){f.off("channel")};module.exports={mpEventSend:l,mpEventWatch:c,mpEventOff:s};
+"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+// EventChannel.js
+var EventChannel = /*#__PURE__*/function () {
+  function EventChannel() {
+    _classCallCheck(this, EventChannel);
+    this.listeners = {};
+  }
+
+  // 绑定事件（确保每个事件只有一个回调）
+  return _createClass(EventChannel, [{
+    key: "on",
+    value: function on(event, callback) {
+      this.listeners[event] = [callback]; // 仅保存一个回调
+    }
+
+    // 触发事件
+  }, {
+    key: "emit",
+    value: function emit(event, data) {
+      if (this.listeners[event]) {
+        this.listeners[event].forEach(function (callback) {
+          return callback(data);
+        });
+      }
+    }
+
+    // 解除事件监听
+  }, {
+    key: "off",
+    value: function off(event, callback) {
+      if (this.listeners[event]) {
+        var index = this.listeners[event].indexOf(callback);
+        if (index !== -1) {
+          this.listeners[event].splice(index, 1);
+        }
+      }
+    }
+  }]);
+}();
+var channel = new EventChannel();
+var mpEventWatch = function mpEventWatch(callback) {
+  channel.on('channel', callback);
+};
+var mpEventSend = function mpEventSend(data) {
+  channel.emit('channel', data);
+};
+var mpEventOff = function mpEventOff() {
+  channel.off('channel');
+};
+module.exports = {
+  mpEventSend: mpEventSend,
+  mpEventWatch: mpEventWatch,
+  mpEventOff: mpEventOff
+};
